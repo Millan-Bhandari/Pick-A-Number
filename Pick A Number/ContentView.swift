@@ -15,12 +15,14 @@ struct ContentView: View {
     @State private var overlyComplicated = ""
     @State private var win = ""
     @State private var guess = ""
+    @State var reset = ""
+    @State var isreset = false
     var body: some View {
         VStack{
-        Text("Pick A Number")
-            .fontWeight(.bold)
-            .padding()
-            .font(.title)
+            Text("Pick A Number")
+                .fontWeight(.bold)
+                .padding()
+                .font(.title)
             HStack{
                 Text("Between")
                 TextField("Number", text: $text1)
@@ -38,16 +40,25 @@ struct ContentView: View {
             TextField("\(overlyComplicated)", text: $yourNum)
                 .padding()
             Button("\(guess)") {
+                reset = "New Game"
                 determineWinner()
+            }
+            Button("\(reset)") {
+                Reset()
             }
             Text("\(win)")
         }
         .onAppear {
             overlyComplicated = ""
             guess = ""
+            reset = ""
         }
         .onChange(of: yourNum) { newValue in
-            guess = "Guess"
+            if let yournum1 = Int(yourNum) {
+                if yournum1 > 1 {
+                    guess = "Guess"
+                }
+            }
         }
     }
     func Random() {
@@ -64,6 +75,17 @@ struct ContentView: View {
         if yourNum != "\(randomNum)" {
             win = "Welp u lose. the number was \(randomNum)"
         }
+    }
+    func Reset() {
+        text1 = ""
+        text2 = ""
+        yourNum = ""
+        randomNum = 0
+        overlyComplicated = ""
+        win = ""
+        guess = ""
+        reset = ""
+        isreset = true
     }
 }
 
