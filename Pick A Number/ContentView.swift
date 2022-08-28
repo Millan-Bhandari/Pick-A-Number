@@ -40,12 +40,13 @@ struct ContentView: View {
             TextField("\(overlyComplicated)", text: $yourNum)
                 .padding()
             Button("\(guess)") {
-                reset = "New Game"
+                reset = "Play Again"
                 determineWinner()
             }
             Button("\(reset)") {
                 Reset()
             }
+            .padding()
             Text("\(win)")
         }
         .onAppear {
@@ -55,7 +56,7 @@ struct ContentView: View {
         }
         .onChange(of: yourNum) { newValue in
             if let yournum1 = Int(yourNum) {
-                if yournum1 > 1 {
+                if yournum1 > 0 {
                     guess = "Guess"
                 }
             }
@@ -93,4 +94,18 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
+}
+
+struct RoundedRectangleButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    HStack {
+      Spacer()
+      configuration.label.foregroundColor(.black)
+      Spacer()
+    }
+    .padding()
+    .frame(width: 50, height: 25, alignment: .center)
+    .background(Color.yellow.cornerRadius(8))
+    .scaleEffect(configuration.isPressed ? 0.95 : 1)
+  }
 }
