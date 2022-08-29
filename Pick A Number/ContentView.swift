@@ -17,12 +17,14 @@ struct ContentView: View {
     @State private var guess = ""
     @State var reset = ""
     @State var isreset = false
+    @Environment(\.isEnabled) private var isEnabled: Bool
     var body: some View {
         VStack{
             Text("Pick A Number")
                 .fontWeight(.bold)
                 .padding()
                 .font(.title)
+            
             HStack{
                 Text("Between")
                 TextField("Number", text: $text1)
@@ -46,8 +48,9 @@ struct ContentView: View {
             Button("\(reset)") {
                 Reset()
             }
-            .padding()
-            Text("\(win)")
+            Text("\(win)").background(.gray)
+                .cornerRadius(10)
+                .padding()
         }
         .onAppear {
             overlyComplicated = ""
@@ -108,4 +111,27 @@ struct RoundedRectangleButtonStyle: ButtonStyle {
     .background(Color.yellow.cornerRadius(8))
     .scaleEffect(configuration.isPressed ? 0.95 : 1)
   }
+}
+
+
+struct BigButtonStyle: ButtonStyle {
+
+    @State var color: Color = .indigo
+    @Environment(\.isEnabled) private var isEnabled: Bool
+    
+    func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+            .font(.title.bold())
+            .padding()
+            .frame(maxWidth: .infinity)
+            .foregroundColor(isEnabled ? .white : Color(UIColor.systemGray3))
+            .background(isEnabled ? color : Color(UIColor.systemGray5))
+            .cornerRadius(12)
+            .overlay {
+                if configuration.isPressed {
+                    Color(white: 1.0, opacity: 0.2)
+                        .cornerRadius(12)
+                }
+            }
+    }
 }
